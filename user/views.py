@@ -27,14 +27,14 @@ class RegisterUser(APIView):
                 return Response({'ok': False})
 
         if data['action'] == 'create_user':
-            try:
+            # try:
                 serializer = UserSerializer(data=data)
                 serializer.is_valid(raise_exception=True)
                 serializer.save()
                 return Response(
                     {'ok': True, 'id': serializer.data['id'], 'message': "Foydanunchi muvaffaqiyatli yaratildi"})
-            except:
-                return Response({'ok': False, 'error': 'User yaratilmadi'})
+            # except:
+            #     return Response({'ok': False, 'error': 'User yaratilmadi'})
 
         if data['action'] == 'check_ball':
             user = list(User.objects.filter(ball=15).values())
