@@ -4,7 +4,7 @@ from .models import User
 
 class UserSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
-    image = serializers.ImageField()
+    image = serializers.ImageField(allow_null=True)
     username = serializers.CharField(max_length=30)
     name = serializers.CharField(max_length=30)
     surname = serializers.CharField(max_length=30)
