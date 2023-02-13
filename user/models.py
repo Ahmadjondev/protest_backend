@@ -22,13 +22,14 @@ class User(models.Model):
     coins = models.DecimalField(max_digits=16, decimal_places=0)
     created_at = models.DateTimeField(auto_now_add=True)
     is_online = models.BooleanField(default=True)
+    # badge = models.ManyToManyField(related_name='badge', )
 
     def __str__(self):
         return f"{self.name} {self.surname}"
 
 
 class Badge(models.Model):
-    user_id = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     name = models.CharField(max_length=30)
     desc = models.TextField(max_length=500)
-    badge_id = models.IntegerField(blank=True)
+    # badge_id = models.IntegerField(blank=True)
