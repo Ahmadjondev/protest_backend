@@ -2,7 +2,14 @@ const arrow = document.querySelectorAll(".arrow");
 const sidebar = document.querySelector(".sidebar");
 const mainWidth = document.querySelector(".main");
 const sidebarBtn = document.querySelector(".bx-menu");
+const prfImg = document.querySelector(".prf_img");
+const box = document.querySelector(".top_nav .right_box .box");
 
+document.addEventListener("mouse", (e) => {})
+
+prfImg.addEventListener("click", ()=>{
+    box.classList.toggle("active");
+})
 
 for (var i = 0; i < arrow.length; i++) {
     arrow[i].addEventListener("click", (e) => {
@@ -24,13 +31,13 @@ var myChart = new Chart(ctx, {
     data: {
         labels: ['Jun', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
         datasets: [{
-            label: 'Earnings in $',
+            label: 'Foyda in $',
             data: [4500,3486,1546,4900,2020,3210,4022,4500,3486,1546,4900,2020],
             backgroundColor: [
-                'rgba(54,162,235,1)'
+                '#1788EF'
             ],
             borderColor: [
-                'rgba(54,162,235,1)'
+                '#1788EF'
             ],
             borderWidth: 1
         }]
@@ -50,13 +57,13 @@ var myChart = new Chart(ctx2, {
             data: [42,54,5,4],
             backgroundColor: [
                 'rgba(41,155,99,1)',
-                'rgba(54,162,235,1)',
+                '#1788EF',
                 'rgba(255,206,86,1)',
                 'rgba(120,46,139,1)'
             ],
             borderColor: [
                 'rgba(41,155,99,1)',
-                'rgba(54,162,235,1)',
+                '#1788EF',
                 'rgba(255,206,86,1)',
                 'rgba(120,46,139,1)'
             ],
