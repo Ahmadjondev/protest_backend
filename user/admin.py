@@ -40,6 +40,6 @@ class BadgeAdmin(admin.ModelAdmin):
         'user_id',
         'name',
         'desc',
-        'badge_id',
+        # 'badge_id',
     ]
 
