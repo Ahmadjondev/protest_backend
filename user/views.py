@@ -3,11 +3,17 @@ from django.forms import model_to_dict
 from .models import User
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from django.views.generic import TemplateView
 from .serializers import UserSerializer
 import os
 
 
 # Create your views here.
+
+class TemplateView(TemplateView):
+    template_name = 'index.html'
+
+
 class RegisterUser(APIView):
 
     def post(self, request):
@@ -28,13 +34,13 @@ class RegisterUser(APIView):
 
         if data['action'] == 'create_user':
             # try:
-                serializer = UserSerializer(data=data)
-                serializer.is_valid(raise_exception=True)
-                serializer.save()
-                return Response(
-                    {'ok': True, 'id': serializer.data['id'], 'message': "Foydanunchi muvaffaqiyatli yaratildi"})
-            # except:
-            #     return Response({'ok': False, 'error': 'User yaratilmadi'})
+            serializer = UserSerializer(data=data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(
+                {'ok': True, 'id': serializer.data['id'], 'message': "Foydanunchi muvaffaqiyatli yaratildi"})
+        # except:
+        #     return Response({'ok': False, 'error': 'User yaratilmadi'})
 
         if data['action'] == 'check_ball':
             user = list(User.objects.filter(ball=15).values())
