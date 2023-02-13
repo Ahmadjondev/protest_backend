@@ -2,6 +2,14 @@ const arrow = document.querySelectorAll(".arrow");
 const sidebar = document.querySelector(".sidebar");
 const mainWidth = document.querySelector(".main");
 const sidebarBtn = document.querySelector(".bx-menu");
+const prfImg = document.querySelector(".prf-img");
+const box = document.querySelector(".top_nav .right_box .box");
+
+document.addEventListener("mousemove", (e) => {})
+
+prfImg.addEventListener("mousemove", ()=>{
+    box.addEventListener("active");
+})
 
 
 for (var i = 0; i < arrow.length; i++) {
