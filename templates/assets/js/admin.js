@@ -27,10 +27,10 @@ var myChart = new Chart(ctx, {
             label: 'Earnings in $',
             data: [4500,3486,1546,4900,2020,3210,4022,4500,3486,1546,4900,2020],
             backgroundColor: [
-                'rgba(54,162,235,1)'
+                '#1788EF'
             ],
             borderColor: [
-                'rgba(54,162,235,1)'
+                '#1788EF'
             ],
             borderWidth: 1
         }]
@@ -50,13 +50,13 @@ var myChart = new Chart(ctx2, {
             data: [42,54,5,4],
             backgroundColor: [
                 'rgba(41,155,99,1)',
-                'rgba(54,162,235,1)',
+                '#1788EF',
                 'rgba(255,206,86,1)',
                 'rgba(120,46,139,1)'
             ],
             borderColor: [
                 'rgba(41,155,99,1)',
-                'rgba(54,162,235,1)',
+                '#1788EF',
                 'rgba(255,206,86,1)',
                 'rgba(120,46,139,1)'
             ],
