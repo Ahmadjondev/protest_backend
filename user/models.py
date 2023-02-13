@@ -22,7 +22,7 @@ class User(models.Model):
     coins = models.DecimalField(max_digits=16, decimal_places=0)
     created_at = models.DateTimeField(auto_now_add=True)
     is_online = models.BooleanField(default=True)
-    badge = models.ManyToManyField(related_name='badge', )
+    # badge = models.ManyToManyField(related_name='badge', )
 
     def __str__(self):
         return f"{self.name} {self.surname}"
