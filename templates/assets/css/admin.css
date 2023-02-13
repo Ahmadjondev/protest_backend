@@ -125,13 +125,9 @@ html {
   transition: all .5s ease-in-out;
 }
 
-.prf_img:hover ~ .top_nav .right_box .box,
-.top_nav .right_box .box:hover{
-  display: flex;
-}
-
 .top_nav .right_box .box.active{
   display: flex;
+  transition: all .5s ease-in-out;
 }
 
 .top_nav .right_box .profile-details .profile_name,
@@ -213,6 +209,12 @@ html {
   font-size: 35px;
   padding: 5px;
   border-radius: 5px;
+  transition: all 0.5s ease;
+}
+
+.sidebar.close .logo-details .home-section .home-content .bx-menu,
+.sidebar.close .logo-details .home-section .home-content .text {
+  background: #11101d;
 }
 
 .sidebar .logo-details .home-section .home-content .bx-menu {
