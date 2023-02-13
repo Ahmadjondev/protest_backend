@@ -38,7 +38,6 @@ html {
   top: 0;
   background: #11101d;
   height: 70px;
-  padding-left: 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -48,6 +47,7 @@ html {
   width: 100%;
   display: flex;
   align-items: center;
+  padding-left: 250px;
 }
 
 .top_nav .left_box input{
@@ -59,14 +59,14 @@ html {
   font-size: 20px;
   letter-spacing: .8px;
   outline: none;
-  width: 65%;
+  width: 50%;
 }
 
 .top_nav .left_box button{
   background: #1d1b31;
   color: #fff;
   border: none;
-  border-left: 1px solid #87898d;
+  border-left: 1px solid #fefeff9a;
   outline: none;
   font-size: 14px;
   padding: 8px;
