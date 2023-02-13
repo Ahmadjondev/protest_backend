@@ -31,7 +31,7 @@ var myChart = new Chart(ctx, {
     data: {
         labels: ['Jun', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
         datasets: [{
-            label: 'Earnings in $',
+            label: 'Foyda in $',
             data: [4500,3486,1546,4900,2020,3210,4022,4500,3486,1546,4900,2020],
             backgroundColor: [
                 '#1788EF'
