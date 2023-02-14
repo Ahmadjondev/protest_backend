@@ -1,6 +1,3 @@
-/* Google Fonts Import Link */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-
 * {
   margin: 0;
   padding: 0;
@@ -401,37 +398,6 @@ html {
   transform: translateY(-50%);
 }
 
-@media (max-width: 400px) {
-  .sidebar.close .nav-links li .sub-menu {
-    display: none;
-  }
-
-  .sidebar {
-    width: 78px;
-  }
-
-  .sidebar.close {
-    width: 0;
-  }
-
-  .sidebar .logo-details .home-section {
-    left: -8px;
-    width: 100%;
-    z-index: 100;
-  }
-  .sidebar .logo-details .logo_img{
-    width: 268px;
-    left: 0;
-    padding-left: 60px;
-    height: 69.8;
-  }
-
-  .sidebar.close .logo-details .home-section {
-    width: 100%;
-    left: 15px;
-  }
-}
-
 /* main */
 .main {
   width: calc(100% - 260px);
@@ -529,58 +495,4 @@ html {
 .charts .chart:first-child {
   margin-left: 0;
   margin-right: 10px;
-}
-
-@media screen and (max-width:900px) {
-  .main .cards {
-    grid-template-columns: 50% 50%;
-  }
-
-  .main .charts {
-    grid-template-columns: 100%;
-  }
-
-  .charts .chart {
-    margin: 10px;
-    margin-left: 0;
-  }
-
-  .cards .number {
-    font-size: 25px;
-  }
-
-  .main {
-    width: calc(100% - 260px);
-    padding: 50px 0;
-  }
-
-  .main.main-width {
-    width: calc(100% - 80px);
-    padding: 70px 0;
-  }
-}
-
-@media screen and (max-width:650px) {
-
-  .main,
-  .main.main-show {
-    width: calc(100% - 78px);
-  }
-}
-
-@media screen and (max-width:500px) {
-  .main .cards {
-    grid-template-columns: 100%;
-  }
-
-  .cards .number {
-    font-size: 20px;
-  }
-}
-
-@media screen and (max-width:400px) {
-  .main {
-    width: calc(100% - 60px);
-    padding: 70px 0;
-  }
 }
