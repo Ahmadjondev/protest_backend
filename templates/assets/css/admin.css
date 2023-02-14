@@ -47,7 +47,7 @@ html {
   width: 100%;
   display: flex;
   align-items: center;
-  padding-left: 250px;
+  padding-left: 20%;
 }
 
 .top_nav .left_box input{
