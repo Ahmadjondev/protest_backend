@@ -2,6 +2,12 @@ from rest_framework import serializers
 from .models import User, Badge
 
 
+class BadgeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Badge
+        fields = ['id', 'name', 'desc', 'user']
+
+
 class UserSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     image = serializers.ImageField(allow_null=True)
@@ -18,6 +24,7 @@ class UserSerializer(serializers.Serializer):
     coins = serializers.IntegerField()
     created_at = serializers.DateTimeField(read_only=True)
     is_online = serializers.BooleanField(default=False)
+    badge = BadgeSerializer(many=True, read_only=True)
 
     def update(self, instance, validated_data):
         instance.image = validated_data.get("image")
@@ -39,9 +46,3 @@ class UserSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         return User.objects.create(**validated_data)
-
-
-class BadgeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Badge
-        fields = ['id', 'name', 'desc', 'user']

@@ -80,10 +80,11 @@ class SectionSerializer(serializers.ModelSerializer):
 
 class ScienceSerializer(serializers.ModelSerializer):
     sections = serializers.StringRelatedField(many=True, read_only=True)
+    science = SubjectSerializer(many=True)
 
     class Meta:
         model = Science
-        fields = ('id', 'name', 'sections')
+        fields = ('id', 'name', 'sections', 'science')
 # id = serializers.IntegerField(read_only=True)
 # name = serializers.CharField(max_length=55)
 # section = serializers.CharField(max_length=55)

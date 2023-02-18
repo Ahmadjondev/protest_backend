@@ -62,8 +62,18 @@ class SubjectView(APIView):
             subjects = Subject.objects.filter(science=params).values()
         else:
             subjects = Subject.objects.all().values()
-        serializer = SubjectSerializer(subjects)
-        return Response({'ok': True, 'result': subjects})
+
+        json: dict = SubjectSerializer(subjects).data
+        lists: list = []
+        for lesson in json:
+            lists.append({
+                'id': lesson['id'],
+                'section_id': lesson['section_id'],
+                'name': lesson['subject'],
+                'science': lesson['science_id'],
+            })
+
+        return Response({'ok': True, 'result': list})
     # except:
     #     return Response({'ok': False, 'result': []})
 

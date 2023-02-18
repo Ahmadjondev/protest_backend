@@ -1,33 +1,27 @@
 from django.forms import model_to_dict
 
-from .models import User
+from .models import User, Badge
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from django.views.generic import TemplateView
 from .serializers import UserSerializer
 import os
 
 
 # Create your views here.
-
-class TemplateView(TemplateView):
-    template_name = 'index.html'
-
-
 class RegisterUser(APIView):
 
     def post(self, request):
         data = request.data
         if data['action'] == 'check_user':
             try:
-                User.objects.get()
+                User.objects.get(id=data['username'])
                 return Response({'ok': True})
             except:
                 return Response({'ok': False})
 
         if data['action'] == 'check_phone':
             try:
-                User.objects.get()
+                User.objects.get(id=data['phone'])
                 return Response({'ok': True})
             except:
                 return Response({'ok': False})
@@ -114,3 +108,44 @@ class UserData(APIView):
     def get(self, request):
         users = list(User.objects.all().values())
         return Response(users)
+
+    # def get(self, request, *args, **kwargs):
+    #     try:
+    #         user = get_user_model().objects.get(pk=kwargs['req_user_pk'])
+    #     except get_user_model().DoesNotExist:
+    #         user = None
+    #     try:
+    #         post = Post.objects.get(pk=kwargs['post_pk'])
+    #     except Post.DoesNotExist:
+    #         post = None
+    #     if user is not None and post is not None:
+    #         if user in post.likes.all():
+    #             post.likes.remove(user)
+    #             message(user.username + " unliked the post '{}'".format(post.pk))
+    #         else:
+    #             post.likes.add(user)
+    #             message(user.username + " liked the post '{}'".format(post.pk))
+    #         return Response(status=status.HTTP_200_OK)
+    #     return Response(status=status.HTTP_203_NON_AUTHORITATIVE_INFORMATION,
+    #                     data={"error": "Invalid pk values"})
+
+
+class UserBadge(APIView):
+    def get(self, request):
+        try:
+            user = User.objects.get(id=1)
+            serializer = UserSerializer(user)
+        except User.DoesNotExist:
+            user = None
+        try:
+            badge = Badge.objects.get(badge=request.query_params.get('badge'))
+        except Badge.DoesNotExist:
+            badge = None
+
+        if user is not None and badge is not None:
+            if user in badge.objects.all():
+                print("This have a Badge")
+            else:
+                badge.add(user)
+        a = UserSerializer(user)
+        return Response({'ok': a.data})

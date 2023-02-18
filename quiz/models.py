@@ -21,7 +21,7 @@ class Section(models.Model):
 class Subject(models.Model):
     section = models.ForeignKey(Section, on_delete=models.CASCADE, related_name='subjects', null=True)
     subject = models.TextField(verbose_name="Mavzu")
-    science = models.IntegerField(null=True)
+    science = models.ForeignKey(Science, on_delete=models.CASCADE, related_name='science', null=True)
 
     def __str__(self):
         return self.subject
@@ -49,3 +49,7 @@ class Quiz(models.Model):
 
     def __str__(self):
         return self.question_name
+
+    @staticmethod
+    def quiz_count(index: int):
+        return Quiz.objects.filter(subject_id=index).count()

@@ -37,7 +37,6 @@ class UserAdmin(admin.ModelAdmin):
 @admin.register(Badge)
 class BadgeAdmin(admin.ModelAdmin):
     list_display = [
-        'user_id',
         'name',
         'desc',
         # 'badge_id',
