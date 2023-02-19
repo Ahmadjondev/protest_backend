@@ -27,6 +27,7 @@ class Subject(models.Model):
         return self.subject
 
 
+
 class Quiz(models.Model):
     def nameFile(instance, filename):
         return '/'.join(['Subject-images', filename])
