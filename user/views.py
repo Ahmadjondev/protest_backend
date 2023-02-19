@@ -14,27 +14,27 @@ class RegisterUser(APIView):
         data = request.data
         if data['action'] == 'check_user':
             try:
-                User.objects.get(id=data['username'])
+                User.objects.get()
                 return Response({'ok': True})
             except:
                 return Response({'ok': False})
 
         if data['action'] == 'check_phone':
             try:
-                User.objects.get(id=data['phone'])
+                User.objects.get()
                 return Response({'ok': True})
             except:
                 return Response({'ok': False})
 
         if data['action'] == 'create_user':
-            # try:
-            serializer = UserSerializer(data=data)
-            serializer.is_valid(raise_exception=True)
-            serializer.save()
-            return Response(
-                {'ok': True, 'id': serializer.data['id'], 'message': "Foydanunchi muvaffaqiyatli yaratildi"})
-        # except:
-        #     return Response({'ok': False, 'error': 'User yaratilmadi'})
+            try:
+                serializer = UserSerializer(data=data)
+                serializer.is_valid(raise_exception=True)
+                serializer.save()
+                return Response(
+                    {'ok': True, 'id': serializer.data['id'], 'message': "Foydanunchi muvaffaqiyatli yaratildi"})
+            except:
+                return Response({'ok': False, 'error': 'User yaratilmadi'})
 
         if data['action'] == 'check_ball':
             user = list(User.objects.filter(ball=15).values())
@@ -48,9 +48,9 @@ class LoginUser(APIView):
             try:
                 user = None
                 if data['phone'] == '' or data['phone'] is None:
-                    user = User.objects.get(username=data['username'], password=data['password'])
+                    user = User.objects.get()
                 else:
-                    user = User.objects.get(phone=data['phone'], password=data['password'])
+                    user = User.objects.get()
                 serializer = UserSerializer(user)
                 return Response({'ok': True, 'id': serializer.data['id']})
             except:
@@ -61,12 +61,12 @@ class UserData(APIView):
     def post(self, request):
         data = request.data
         if data['action'] == 'get_user':
-            user = User.objects.get(id=data['id'])
+            user = User.objects.get()
             serializer = UserSerializer(user)
             return Response(serializer.data)
 
         if data['action'] == 'update_coins':
-            user = User.objects.get(id=data['id'])
+            user = User.objects.get()
             json = model_to_dict(user)
             json['coins'] += int(data['coins'])
             serializer = UserSerializer(user, data=json)
@@ -75,7 +75,7 @@ class UserData(APIView):
             return Response({'ok': True, 'message': "Tanga qoshildi"})
 
         if data['action'] == 'update_ball':
-            user = User.objects.get(id=data['id'])
+            user = User.objects.get()
             json = model_to_dict(user)
             json['ball'] += (data['ball'])
             serializer = UserSerializer(user, data=json)
@@ -84,7 +84,7 @@ class UserData(APIView):
             return Response({'ok': True, 'message': "Ball yangilandi"})
 
         if data['action'] == 'update_online':
-            user = User.objects.get(id=data['id'])
+            user = User.objects.get()
             json = model_to_dict(user)
             json['is_online'] = bool(data['is_online'])
             serializer = UserSerializer(user, data=json)
@@ -93,7 +93,7 @@ class UserData(APIView):
             return Response({'ok': True})
 
         if data['action'] == 'change_image':
-            user = User.objects.get(id=data['id'])
+            user = User.objects.get()
             json = model_to_dict(user)
             file = f"assets/{json['image']}"
             json['image'] = data['image']
@@ -133,12 +133,12 @@ class UserData(APIView):
 class UserBadge(APIView):
     def get(self, request):
         try:
-            user = User.objects.get(id=1)
+            user = User.objects.get()
             serializer = UserSerializer(user)
         except User.DoesNotExist:
             user = None
         try:
-            badge = Badge.objects.get(badge=request.query_params.get('badge'))
+            badge = Badge.objects.get()
         except Badge.DoesNotExist:
             badge = None
 

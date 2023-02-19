@@ -11,11 +11,11 @@ class Science(models.Model):
 
 
 class Section(models.Model):
-    science = models.ForeignKey(Science, on_delete=models.CASCADE, related_name='sections')
+    science = models.ForeignKey(Science, on_delete=models.CASCADE, related_name='section')
     name = models.CharField(max_length=30)
 
     def __str__(self):
-        return f'{self.id}.{self.name}'
+        return self.name
 
 
 class Subject(models.Model):
@@ -31,8 +31,8 @@ class Quiz(models.Model):
     def nameFile(instance, filename):
         return '/'.join(['Subject-images', filename])
 
-    science = models.IntegerField(blank=True, null=True)
-    subject_id = models.IntegerField(blank=True, null=True)
+    science = models.ForeignKey(Science, blank=True, null=True, on_delete=models.CASCADE)
+    subject = models.ForeignKey(Subject, blank=True, null=True, on_delete=models.CASCADE)
     akam_id = models.IntegerField(null=True)
     question_name = models.TextField(verbose_name='Savol')
     question_image = models.ImageField(verbose_name='Subject Image:', upload_to=nameFile, blank=True, null=True)
