@@ -64,17 +64,18 @@ class QuizView(APIView):
     def get(self, request):
         subject_id = request.query_params.get('subject')
         science_id = request.query_params.get('science')
-        limit = int(request.query_params.get('limit'))
-        owner_id = request.query_params.get('science')
+        limit = request.query_params.get('limit')
+        # versiya 2 da userlar test qoshishi mumkin
+        # owner_id = request.query_params.get('science')
         if subject_id is not None:
-            data_quiz = Quiz.objects.filter(subject=subject_id).values()
+            data_quiz = Quiz.objects.filter(subject=int(subject_id)).values()
             return Response({'ok': True, 'quizzes': data_quiz})
 
         if science_id is not None and limit is not None:
-            data_quiz = list(Quiz.objects.filter(science=science_id).values())
+            data_quiz = list(Quiz.objects.filter(science=int(science_id)).values())
             random.shuffle(data_quiz)
-            if len(data_quiz) > limit:
-                return Response({'ok': True, 'quizzes': data_quiz[:limit]})
+            if len(data_quiz) > int(limit):
+                return Response({'ok': True, 'quizzes': data_quiz[:int(limit)]})
             return Response({'ok': True, 'quizzes': data_quiz})
 
     def science_json(id: int):
