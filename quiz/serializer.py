@@ -69,11 +69,11 @@ class SectionSerializer(serializers.ModelSerializer):
 
 
 class ScienceSerializer(serializers.ModelSerializer):
-    science = serializers.SerializerMethodField(read_only=True)
+    section = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Science
-        fields = ['id', 'name', 'science']
+        fields = ['id', 'name', 'section']
 
     def get_section(self, obj):
         s = Section.objects.filter(science=obj.id).values()
