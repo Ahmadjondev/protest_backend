@@ -47,6 +47,7 @@ class QuizSerializer(serializers.Serializer):
 
 class SubjectSerializer(serializers.ModelSerializer):
     question_count = serializers.SerializerMethodField(read_only=True)
+    section = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Subject
@@ -55,6 +56,10 @@ class SubjectSerializer(serializers.ModelSerializer):
     def get_question_count(self, obj):
         quiz = Quiz.objects.filter(subject=obj.id).count()
         return quiz
+
+    def get_section(self, obj):
+        section = Section.objects.get(id=obj.section_id)
+        return model_to_dict(section)
 
 
 class SectionSerializer(serializers.ModelSerializer):
