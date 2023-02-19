@@ -14,14 +14,14 @@ class RegisterUser(APIView):
         data = request.data
         if data['action'] == 'check_user':
             try:
-                User.objects.get()
+                User.objects.get(data['username'])
                 return Response({'ok': True})
             except:
                 return Response({'ok': False})
 
         if data['action'] == 'check_phone':
             try:
-                User.objects.get()
+                User.objects.get(data['phone'])
                 return Response({'ok': True})
             except:
                 return Response({'ok': False})
@@ -46,11 +46,10 @@ class LoginUser(APIView):
         data = request.data
         if data['action'] == 'login':
             try:
-                user = None
                 if data['phone'] == '' or data['phone'] is None:
-                    user = User.objects.get()
+                    user = User.objects.get(username=data['username'], password=data['password'])
                 else:
-                    user = User.objects.get()
+                    user = User.objects.get(phone=data['phone'], password=data['password'])
                 serializer = UserSerializer(user)
                 return Response({'ok': True, 'id': serializer.data['id']})
             except:
@@ -61,12 +60,12 @@ class UserData(APIView):
     def post(self, request):
         data = request.data
         if data['action'] == 'get_user':
-            user = User.objects.get()
+            user = User.objects.get(data['id'])
             serializer = UserSerializer(user)
             return Response(serializer.data)
 
         if data['action'] == 'update_coins':
-            user = User.objects.get()
+            user = User.objects.get(data['id'])
             json = model_to_dict(user)
             json['coins'] += int(data['coins'])
             serializer = UserSerializer(user, data=json)
@@ -75,7 +74,7 @@ class UserData(APIView):
             return Response({'ok': True, 'message': "Tanga qoshildi"})
 
         if data['action'] == 'update_ball':
-            user = User.objects.get()
+            user = User.objects.get(data['id'])
             json = model_to_dict(user)
             json['ball'] += (data['ball'])
             serializer = UserSerializer(user, data=json)
@@ -84,7 +83,7 @@ class UserData(APIView):
             return Response({'ok': True, 'message': "Ball yangilandi"})
 
         if data['action'] == 'update_online':
-            user = User.objects.get()
+            user = User.objects.get(data['id'])
             json = model_to_dict(user)
             json['is_online'] = bool(data['is_online'])
             serializer = UserSerializer(user, data=json)
@@ -93,7 +92,7 @@ class UserData(APIView):
             return Response({'ok': True})
 
         if data['action'] == 'change_image':
-            user = User.objects.get()
+            user = User.objects.get(data['id'])
             json = model_to_dict(user)
             file = f"assets/{json['image']}"
             json['image'] = data['image']
@@ -132,13 +131,14 @@ class UserData(APIView):
 
 class UserBadge(APIView):
     def get(self, request):
+        data = request.data
         try:
-            user = User.objects.get()
+            user = User.objects.get(data['id'])
             serializer = UserSerializer(user)
         except User.DoesNotExist:
             user = None
         try:
-            badge = Badge.objects.get()
+            badge = Badge.objects.get(data['id'])
         except Badge.DoesNotExist:
             badge = None
 

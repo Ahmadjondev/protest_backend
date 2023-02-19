@@ -1,3 +1,4 @@
+import random
 from builtins import print
 
 from django.forms import model_to_dict
@@ -63,24 +64,18 @@ class QuizView(APIView):
     def get(self, request):
         subject_id = request.query_params.get('subject')
         science_id = request.query_params.get('science')
-        limit = request.query_params.get('limit')
+        limit = int(request.query_params.get('limit'))
         owner_id = request.query_params.get('science')
         if subject_id is not None:
             data_quiz = Quiz.objects.filter(subject=subject_id).values()
-            serializer = QuizSerializer(data_quiz)
-            print(data_quiz)
-            list = []
-            for data in data_quiz:
-                list.append(quiz_returned(data))
-            return Response({'ok': True, 'quizzes': list})
-        if science_id is not None:
-            data_quiz = Quiz.objects.filter(science=science_id).values()
-            serializer = QuizSerializer(data_quiz)
-            print(data_quiz)
-            list = []
-            for data in data_quiz:
-                list.append(quiz_returned(data))
-            return Response({'ok': True, 'quizzes': list})
+            return Response({'ok': True, 'quizzes': data_quiz})
+
+        if science_id is not None and limit is not None:
+            data_quiz = list(Quiz.objects.filter(science=science_id).values())
+            random.shuffle(data_quiz)
+            if len(data_quiz) > limit:
+                return Response({'ok': True, 'quizzes': data_quiz[:limit]})
+            return Response({'ok': True, 'quizzes': data_quiz})
 
     def science_json(id: int):
         science = Science.objects.get(id=id)

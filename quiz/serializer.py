@@ -1,14 +1,27 @@
 from django.forms import model_to_dict
 from rest_framework import serializers
+
+from user.models import User
+from user.serializers import UserSerializer
 from .models import Science, Subject, Quiz, Section
 
 
-class QuizSerializer(serializers.Serializer):
-    # model = Quiz
-    # fields = ['id', 'science', 'subject', 'question_name', 'question_image', 'var_a_name', 'var_a_id', 'var_b_name',
-    #           'var_b_id', 'var_c_name', 'var_c_id', 'var_d_name', 'var_d_id', 'correct', 'owner']
+class QuizSerializer(serializers.ModelSerializer):
+    # owner = serializers.SerializerMethodField(read_only=True)
+    model = Quiz
 
+    fields = ['id', 'science', 'subject', 'question_name', 'question_image', 'var_a_name', 'var_a_id', 'var_b_name',
+              'var_b_id', 'var_c_name', 'var_c_id', 'var_d_name', 'var_d_id', 'correct', 'owner']
+
+    def get_owner(self, obj):
+        user = User.objects.get(id=obj.owner)
+        serializer = UserSerializer(user)
+        return serializer.data
+
+
+class QuizMiniSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
+    subject_id = serializers.IntegerField(allow_null=True)
     subject = serializers.IntegerField(allow_null=True)
     science = serializers.IntegerField(allow_null=True)
     question_name = serializers.CharField(max_length=1000)
@@ -25,6 +38,7 @@ class QuizSerializer(serializers.Serializer):
     owner = serializers.IntegerField(allow_null=True)
 
     def update(self, instance, validated_data):
+        instance.subject_id = validated_data.get("subject_id")
         instance.subject_id = validated_data.get("subject")
         instance.question_name = validated_data.get("question_name")
         instance.question_image = validated_data.get("question_image")
