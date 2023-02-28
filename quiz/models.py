@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -21,7 +21,7 @@ class Section(models.Model):
 class Subject(models.Model):
     section = models.ForeignKey(Section, on_delete=models.CASCADE, related_name='subjects', null=True)
     subject = models.TextField(verbose_name="Mavzu")
-    science = models.ForeignKey(Science, on_delete=models.CASCADE, related_name='science', null=True)
+    #science = models.ForeignKey(Science, on_delete=models.CASCADE, related_name='science', null=True) kerak bo'lmagan ustun
 
     def __str__(self):
         return self.subject
@@ -54,3 +54,14 @@ class Quiz(models.Model):
     @staticmethod
     def quiz_count(index: int):
         return Quiz.objects.filter(subject_id=index).count()
+
+   
+class Solved(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    science = models.ForeignKey(Science, blank=True, null=True, on_delete=models.CASCADE)
+    subject = models.ForeignKey(Subject, blank=True, null=True, on_delete=models.CASCADE)
+    answers = models.TextField()
+    result = models.CharField(max_length=555, null=True, blank=True)
+    date = models.DateTimeField(auto_now_add=True)
+    
+       
