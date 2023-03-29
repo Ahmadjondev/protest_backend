@@ -8,7 +8,7 @@ from rest_framework.generics import ListAPIView, ListCreateAPIView
 
 from user.models import User
 from user.serializers import UserSerializer
-from .serializer import QuizSerializer, SubjectSerializer, ScienceSerializer, SolvedSerializer
+from .serializer import QuizSerializer, SubjectSerializer, ScienceSerializer
 
 from quiz.models import Science, Subject, Quiz
 
@@ -178,10 +178,3 @@ class ScienceView(ListAPIView):
     #     # science_id = request.query_params.get('id')
     #     sciences = Science.objects.all().values()
     #     return Response({'ok': True, 'science': sciences})
-
-class SolvedViewSet(viewsets.ModelViewSet):
-    """
-    A viewset for viewing and editing solved instances.
-    """
-    serializer_class = SolvedSerializer
-    queryset = Solved.objects.all()
