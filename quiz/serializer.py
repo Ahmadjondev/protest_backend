@@ -60,6 +60,7 @@ class QuizMiniSerializer(serializers.Serializer):
         return Quiz.objects.create(**validated_data)
 
 
+
 class SubjectSerializer(serializers.ModelSerializer):
     question_count = serializers.SerializerMethodField(read_only=True)
     section = serializers.SerializerMethodField(read_only=True)
