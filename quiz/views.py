@@ -1,16 +1,13 @@
 import random
-from builtins import print
 
-from django.forms import model_to_dict
+from rest_framework.generics import ListCreateAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.generics import ListAPIView, ListCreateAPIView
-
-from user.models import User
-from user.serializers import UserSerializer
-from .serializer import QuizSerializer, SubjectSerializer, ScienceSerializer
 
 from quiz.models import Science, Subject, Quiz
+from user.models import User
+from user.serializers import UserSerializer
+from .serializer import SubjectSerializer, ScienceSerializer
 
 
 # Create your views here.
@@ -140,7 +137,6 @@ class SubjectView(ListCreateAPIView):
     #         })
     #
     #     return Response({'ok': True, 'result': list})
-
     def get_queryset(self):
         id = self.request.query_params.get('id')
         if id is None:
@@ -150,29 +146,29 @@ class SubjectView(ListCreateAPIView):
         return model_s
 
 
-class ScienceView(ListAPIView):
+class ScienceView(ListCreateAPIView):
     # Science Create, Delete, Read
     queryset = Science.objects.all()
     serializer_class = ScienceSerializer
 
-    def post(self, request):
-        data = request.data
-        if data['action'] == 'create_science':
-            try:
-                serializer = ScienceSerializer(data=data)
-                serializer.is_valid(raise_exception=True)
-                serializer.save()
-                return Response({'ok': True})
-            except:
-                return Response({'ok': False})
-
-        if data['action'] == 'delete_science':
-            try:
-                science = Science.objects.get()
-                science.delete()
-                return Response({'ok': True})
-            except:
-                return Response({'ok': False})
+    # def post(self, request):
+    #     data = request.data
+    #     if data['action'] == 'create_science':
+    #         try:
+    #             serializer = ScienceSerializer(data=data)
+    #             serializer.is_valid(raise_exception=True)
+    #             serializer.save()
+    #             return Response({'ok': True})
+    #         except:
+    #             return Response({'ok': False})
+    #
+    #     if data['action'] == 'delete_science':
+    #         try:
+    #             science = Science.objects.get()
+    #             science.delete()
+    #             return Response({'ok': True})
+    #         except:
+    #             return Response({'ok': False})
 
     # def get(self, request, **kwargs):
     #     # science_id = request.query_params.get('id')

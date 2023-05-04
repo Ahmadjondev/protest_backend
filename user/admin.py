@@ -10,27 +10,23 @@ class UserAdmin(admin.ModelAdmin):
         'id',
         'name',
         'surname',
-        'username',
         'phone',
         'region',
         'city',
         'ball',
         'coins',
-        'created_at',
-        'is_online'
+        'created_at'
     ]
     search_fields = [
         'id',
         'name',
         'surname',
-        'username',
         'phone',
         'region',
         'city',
         'ball',
         'coins',
-        'created_at',
-        'is_online'
+        'created_at'
     ]
 
 

@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
                 ('subject_id', models.IntegerField(blank=True, null=True)),
                 ('akam_id', models.IntegerField(null=True)),
                 ('question_name', models.TextField(verbose_name='Savol')),
-                ('question_image', models.ImageField(blank=True, null=True, upload_to=quiz.models.Quiz.nameFile, verbose_name='Subject Image:')),
+                ('question_image', models.ImageField(null=True, upload_to=quiz.models.Quiz.nameFile, verbose_name='Subject Image:')),
                 ('var_a_name', models.CharField(max_length=555, verbose_name='A:')),
                 ('var_a_id', models.IntegerField()),
                 ('var_b_name', models.CharField(max_length=555, verbose_name='B:')),

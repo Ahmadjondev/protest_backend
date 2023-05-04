@@ -8,41 +8,39 @@ class BadgeSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'desc', 'user']
 
 
-class UserSerializer(serializers.Serializer):
-    id = serializers.IntegerField(read_only=True)
+class MiniUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'name', 'surname', 'image']
+
+
+class UserSerializer(serializers.ModelSerializer):
+    followers_count = serializers.SerializerMethodField(read_only=True)
+    following_count = serializers.SerializerMethodField(read_only=True)
     image = serializers.ImageField(allow_null=True)
-    username = serializers.CharField(max_length=30)
-    name = serializers.CharField(max_length=30)
-    surname = serializers.CharField(max_length=30)
-    phone = serializers.CharField(max_length=30)
-    password = serializers.CharField(max_length=30)
-    # profession = serializers.CharField(max_length=15, allow_blank=True)
-    birthday = serializers.CharField(max_length=10)
-    region = serializers.CharField(max_length=30)
-    city = serializers.CharField(max_length=30)
-    ball = serializers.IntegerField()
-    coins = serializers.IntegerField()
-    created_at = serializers.DateTimeField(read_only=True)
-    is_online = serializers.BooleanField(default=False)
     badge = BadgeSerializer(many=True, read_only=True)
 
-    def update(self, instance, validated_data):
-        instance.image = validated_data.get("image")
-        instance.username = validated_data.get("username")
-        instance.name = validated_data.get("name")
-        instance.surname = validated_data.get("surname")
-        instance.phone = validated_data.get("phone")
-        instance.birthday = validated_data.get("birthday")
-        instance.password = validated_data.get("password")
-        # instance.profession = validated_data.get("profession", instance.profession)
-        instance.region = validated_data.get("region")
-        instance.city = validated_data.get("city")
-        instance.ball = validated_data.get("ball")
-        instance.coins = validated_data.get("coins")
-        instance.created_at = validated_data.get("created_at")
-        instance.is_online = validated_data.get("is_online")
-        instance.save()
-        return instance
+    class Meta:
+        model = User
+        fields = ['id', 'name', 'surname', 'image', 'phone', 'birthday', 'region', 'city', 'ball', 'coins',
+                  'created_at', 'badge', 'followers_count', 'following_count']
 
-    def create(self, validated_data):
-        return User.objects.create(**validated_data)
+    # def update(self, instance, validated_data):
+    #     instance.name = validated_data.get('name', instance.name)
+    #     instance.surname = validated_data.get('surname', instance.surname)
+    #     # instance.image = validated_data.get('image', instance.image)
+    #     instance.birthday = validated_data.get('birthday', instance.birthday)
+    #     instance.region = validated_data.get('region', instance.region)
+    #     instance.city = validated_data.get('city', instance.city)
+    #     instance.ball = validated_data.get('ball', instance.ball)
+    #     instance.coins = validated_data.get('coins', instance.coins)
+    #     instance.save()
+    #     return instance
+
+    def get_following_count(self, obj):
+        count = obj.following.all().count()
+        return count
+
+    def get_followers_count(self, obj):
+        count = obj.followers.all().count()
+        return count

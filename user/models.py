@@ -14,15 +14,13 @@ class Badge(models.Model):
 
 
 class User(models.Model):
-    def nameFile(instance, filename):
-        return '/'.join(['User-images', str(instance.username), filename])
+    def nameFile(self, filename):
+        return '/'.join(['User-images', str(self.phone), filename])
 
-    username = models.CharField(max_length=30)
-    image = models.ImageField(verbose_name='Image:', upload_to=nameFile, blank=True)
+    image = models.ImageField(verbose_name='Image:', upload_to=nameFile, blank=True, null=True)
     name = models.CharField(max_length=30)
     surname = models.CharField(max_length=30)
     phone = models.CharField(max_length=30, blank=True)
-    mail = models.CharField(blank=True, max_length=55)
     password = models.CharField(max_length=30)
     birthday = models.CharField(max_length=10)
     region = models.CharField(max_length=30)
@@ -30,8 +28,9 @@ class User(models.Model):
     ball = models.DecimalField(max_digits=16, decimal_places=0, default=0)
     coins = models.DecimalField(max_digits=16, decimal_places=0)
     created_at = models.DateTimeField(auto_now_add=True)
-    is_online = models.BooleanField(default=True)
     badge = models.ManyToManyField(Badge, blank=True)
+    followers = models.ManyToManyField('self', blank=True, symmetrical=False, related_name='Followers')
+    following = models.ManyToManyField('self', blank=True, symmetrical=False, related_name='Following')
 
     def __str__(self):
         return f"{self.name} {self.surname}"

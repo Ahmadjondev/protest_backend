@@ -6,17 +6,18 @@ from user.serializers import UserSerializer
 from .models import Science, Subject, Quiz, Section
 
 
+def get_owner(obj):
+    user = User.objects.get(id=obj.owner)
+    serializer = UserSerializer(user)
+    return serializer.data
+
+
 class QuizSerializer(serializers.ModelSerializer):
     # owner = serializers.SerializerMethodField(read_only=True)
     model = Quiz
 
     fields = ['id', 'science', 'subject', 'question_name', 'question_image', 'var_a_name', 'var_a_id', 'var_b_name',
               'var_b_id', 'var_c_name', 'var_c_id', 'var_d_name', 'var_d_id', 'correct', 'owner']
-
-    def get_owner(self, obj):
-        user = User.objects.get(id=obj.owner)
-        serializer = UserSerializer(user)
-        return serializer.data
 
 
 class QuizMiniSerializer(serializers.Serializer):
@@ -72,7 +73,7 @@ class SubjectSerializer(serializers.ModelSerializer):
         return quiz
 
     def get_section(self, obj):
-        section = Section.objects.get(id=obj.section_id)
+        section = Section.objects.get(id=obj.id)
         return model_to_dict(section)
 
 
@@ -92,6 +93,12 @@ class SectionSerializer(serializers.ModelSerializer):
         model = Section
         fields = ('id', 'name')
 
+    def get_section(self, obj):
+        s = Section.objects.filter(science=self.id).values()
+        return s
+
+    # id = serializers.IntegerField(read_only=True)
+
 
 class ScienceSerializer(serializers.ModelSerializer):
     section = serializers.SerializerMethodField(read_only=True)
@@ -100,11 +107,6 @@ class ScienceSerializer(serializers.ModelSerializer):
         model = Science
         fields = ['id', 'name', 'section']
 
-    def get_section(self, obj):
-        s = Section.objects.filter(science=obj.id).values()
-        return s
-
-        # id = serializers.IntegerField(read_only=True)
     # name = serializers.CharField(max_length=55)
     # section = serializers.StringRelatedField()
     #

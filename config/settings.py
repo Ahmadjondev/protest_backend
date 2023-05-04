@@ -1,6 +1,8 @@
 import os.path
 from pathlib import Path
 
+import channels.layers
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -13,11 +15,14 @@ SECRET_KEY = 'django-insecure-ohn&7$1=k5lv+74v7-vxyp22_^2v=tre65*aus^9hzqmxd8i(^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 # Application definition
 
 INSTALLED_APPS = [
+    # websocket
+    'daphne',
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -26,10 +31,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # local
-    'user.apps.UserConfig',
-    'quiz.apps.QuizConfig',
-    'battle.apps.BattleConfig',
-    'universities.apps.UniversitiesConfig',
+    'user',
+    'quiz',
+    'battle',
+    'universities',
 
     # Image file
     'assets',
@@ -37,6 +42,8 @@ INSTALLED_APPS = [
     # global
     'rest_framework',
 ]
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -67,7 +74,13 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'config.wsgi.application'
+ASGI_APPLICATION = 'config.asgi.application'
 
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer'
+    }
+}
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
