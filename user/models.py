@@ -15,7 +15,7 @@ class Badge(models.Model):
 
 class User(models.Model):
     def nameFile(self, filename):
-        return '/'.join(['User-images', str(self.phone), filename])
+        return '/'.join(['UserImages', str(self.phone), filename])
 
     image = models.ImageField(verbose_name='Image:', upload_to=nameFile, blank=True, null=True)
     name = models.CharField(max_length=30)

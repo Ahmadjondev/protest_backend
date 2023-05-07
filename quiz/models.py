@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 class Science(models.Model):
 
     def scienceImage(filename):
@@ -22,9 +23,9 @@ class Section(models.Model):
 
 
 class Subject(models.Model):
-    section = models.ForeignKey(Section, on_delete=models.CASCADE, related_name='subject', null=True)
+    section = models.ForeignKey(Section, on_delete=models.CASCADE, related_name='section', null=True)
     subject = models.TextField(verbose_name="Mavzu")
-    #science = models.ForeignKey(Science, on_delete=models.CASCADE, related_name='science', null=True) kerak bo'lmagan ustun
+    science = models.ForeignKey(Science, on_delete=models.CASCADE, blank=True, related_name='science', null=True)
 
     def __str__(self):
         return self.subject
@@ -32,10 +33,10 @@ class Subject(models.Model):
 
 class Quiz(models.Model):
 
-    def nameFile(filename):
+    def nameFile(self, filename):
         return '/'.join(['SubjectImages', filename])
 
-    def answerFile(filename):
+    def answerFile(self, filename):
         return '/'.join(['AnswerImages', filename])
 
     science = models.ForeignKey(Science, blank=True, null=True, on_delete=models.CASCADE)
@@ -43,14 +44,14 @@ class Quiz(models.Model):
 
     akam_id = models.IntegerField(null=True)
 
-    question_name = models.TextField(verbose_name='Savol')
-    question_image = models.ImageField(verbose_name='Subject Image:', upload_to=nameFile, blank=True, null=True)
+    question_name = models.TextField(verbose_name='Savol', blank=True)
+    question_image = models.ImageField(verbose_name='Rasmli savol:', upload_to=nameFile, blank=True, null=True)
 
-    var_a_name = models.CharField(verbose_name='A:', max_length=555)
+    var_a_name = models.CharField(verbose_name='A:', max_length=555, null=True, blank=True)
     var_a_image = models.ImageField(upload_to=answerFile, null=True, blank=True)
     var_a_id = models.IntegerField()
 
-    var_b_name = models.CharField(verbose_name='B:', max_length=555)
+    var_b_name = models.CharField(verbose_name='B:', max_length=555, null=True, blank=True)
     var_b_image = models.ImageField(upload_to=answerFile, null=True, blank=True)
     var_b_id = models.IntegerField()
 
@@ -73,7 +74,7 @@ class Quiz(models.Model):
     def quiz_count(index: int):
         return Quiz.objects.filter(subject_id=index).count()
 
-   
+
 class Solved(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     science = models.ForeignKey(Science, blank=True, null=True, on_delete=models.CASCADE)
@@ -81,5 +82,3 @@ class Solved(models.Model):
     answers = models.TextField()
     result = models.CharField(max_length=555, null=True, blank=True)
     date = models.DateTimeField(auto_now_add=True)
-    
-       

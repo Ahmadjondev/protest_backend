@@ -15,7 +15,7 @@ SECRET_KEY = 'django-insecure-ohn&7$1=k5lv+74v7-vxyp22_^2v=tre65*aus^9hzqmxd8i(^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'quiz',
     'battle',
     'universities',
+    'histories',
 
     # Image file
     'assets',
@@ -39,8 +40,6 @@ INSTALLED_APPS = [
     # global
     'rest_framework',
 ]
-
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

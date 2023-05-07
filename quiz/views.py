@@ -1,13 +1,9 @@
-import random
+from rest_framework import generics
 
-from rest_framework.generics import ListCreateAPIView
-from rest_framework.response import Response
-from rest_framework.views import APIView
-
-from quiz.models import Science, Subject, Quiz
+from quiz.models import Science, Subject, Quiz, Section
 from user.models import User
 from user.serializers import UserSerializer
-from .serializer import SubjectSerializer, ScienceSerializer
+from .serializer import SubjectSerializer, ScienceSerializer, QuizSerializer
 
 
 # Create your views here.
@@ -45,108 +41,54 @@ def quiz_returned(serializer):
     return quiz_json
 
 
-class QuizView(APIView):
+class QuizView(generics.ListCreateAPIView):
+    serializer_class = QuizSerializer
 
-    # def post(self, request):
-    #     data = request.data
-    #     if data['action'] == 'create_quiz':
-    #         # try:
-    #         serializer = QuizSerializer(data=data)
-    #         serializer.is_valid(raise_exception=True)
-    #         serializer.save()
-    #         return Response({'ok': True, 'data': serializer.data})
-    #     # except:
-    #     #     return Response({'ok': False})
+    def perform_create(self, serializer):
+        data = self.request.data
+        print(data)
+        try:
+            Quiz.objects.get(akam_id=data['akam_id'])
+        except Quiz.DoesNotExist:
+            subject = Subject.objects.get(id=data['subject'])
+            science = Science.objects.get(id=data['science'])
+            serializer.save(subject=subject, science=science)
 
-    def get(self, request):
-        subject_id = request.query_params.get('subject')
-        science_id = request.query_params.get('science')
-        limit = request.query_params.get('limit')
+    def get_queryset(self):
+        subject_id = self.request.query_params.get('subject')
+        science_id = self.request.query_params.get('science')
+        limit = self.request.query_params.get('limit')
+
         # versiya 2 da userlar test qoshishi mumkin
         # owner_id = request.query_params.get('science')
+
         if subject_id is not None:
-            data_quiz = Quiz.objects.filter(subject=int(subject_id)).values()
-            return Response({'ok': True, 'quizzes': data_quiz})
+            return Quiz.objects.filter(subject=int(subject_id)).order_by('?')
 
         if science_id is not None and limit is not None:
-            data_quiz = list(Quiz.objects.filter(science=int(science_id)).values())
-            random.shuffle(data_quiz)
-            if len(data_quiz) > int(limit):
-                return Response({'ok': True, 'quizzes': data_quiz[:int(limit)]})
-            return Response({'ok': True, 'quizzes': data_quiz})
-
-    def science_json(id: int):
-        science = Science.objects.get(id=id)
-        serializer = ScienceSerializer(science)
-        return serializer.data
-
-    def subject_json(id: int):
-        science = Subject.objects.get(id=id)
-        serializer = SubjectSerializer(science)
-        return serializer.data
+            return Quiz.objects.filter(science=int(science_id)).order_by('?')[:int(limit)]
 
 
-class SubjectView(ListCreateAPIView):
+class SubjectView(generics.ListCreateAPIView):
     # queryset = Subject.objects.all()
     serializer_class = SubjectSerializer
 
-    # lookup_field = 'id'
-    # def post(self, request):
-    #     data = request.data
-    #     if data['action'] == 'create_subject':
-    #         try:
-    #             serializer = SubjectSerializer(data=data)
-    #             serializer.is_valid(raise_exception=True)
-    #             serializer.save()
-    #             return Response({'ok': True})
-    #         except:
-    #             return Response({'ok': False})
-    #
-    #     if data['action'] == 'delete_subject':
-    #         try:
-    #             subject = Subject.objects.get()
-    #             subject.delete()
-    #             return Response({'ok': True})
-    #         except:
-    #             return Response({'ok': False})
-    #
-    #     if data['action'] == 'subject':
-    #         try:
-    #             subject = Subject.objects.get()
-    #             return Response({'ok': True, 'science': model_to_dict(subject)})
-    #         except:
-    #             return Response({'ok': False})
+    def perform_create(self, serializer):
+        data = self.request.data
+        section = Section.objects.get(id=data['section'])
+        science = Science.objects.get(id=data['science'])
+        serializer.save(section=section, science=science)
 
-    # def get(self, request):
-    #     # try:
-    #     params = request.query_params['id']
-    #     subjects = None
-    #     if int(params) != 0:
-    #         subjects = Subject.objects.filter(science=params).values()
-    #     else:
-    #         subjects = Subject.objects.all().values()
-    #
-    #     json: dict = SubjectSerializer(subjects).data
-    #     lists: list = []
-    #     for lesson in json:
-    #         lists.append({
-    #             'id': lesson['id'],
-    #             'section_id': lesson['section_id'],
-    #             'name': lesson['subject'],
-    #             'science': lesson['science_id'],
-    #         })
-    #
-    #     return Response({'ok': True, 'result': list})
     def get_queryset(self):
         id = self.request.query_params.get('id')
-        if id is None:
+        if id == 0 or id is None:
             model_s = Subject.objects.all()
         else:
             model_s = Subject.objects.filter(science=id)
         return model_s
 
 
-class ScienceView(ListCreateAPIView):
+class ScienceView(generics.ListCreateAPIView):
     # Science Create, Delete, Read
     queryset = Science.objects.all()
     serializer_class = ScienceSerializer

@@ -1,4 +1,3 @@
-from django.forms import model_to_dict
 from rest_framework import serializers
 
 from user.models import User
@@ -14,10 +13,25 @@ def get_owner(obj):
 
 class QuizSerializer(serializers.ModelSerializer):
     # owner = serializers.SerializerMethodField(read_only=True)
-    model = Quiz
+    # science = serializers.SerializerMethodField(read_only=True)
+    # subject = serializers.SerializerMethodField(read_only=True)
 
-    fields = ['id', 'science', 'subject', 'question_name', 'question_image', 'var_a_name', 'var_a_id', 'var_b_name',
-              'var_b_id', 'var_c_name', 'var_c_id', 'var_d_name', 'var_d_id', 'correct', 'owner']
+    class Meta:
+        model = Quiz
+        fields = (
+            'id', 'akam_id', 'question_name', 'question_image', 'var_a_name', 'var_a_image',
+            'var_a_id', 'var_b_name', 'var_b_image', 'var_b_id', 'var_c_name', 'var_c_image', 'var_c_id', 'var_d_name',
+            'var_d_image', 'var_d_id', 'correct',)
+
+    def get_science(self, obj):
+        science = Science.objects.get(id=obj.id)
+        serializer = ScienceSerializer(science)
+        return {'name': serializer.data['name'], 'id': serializer.data['id']}
+
+    def get_subject(self, obj):
+        science = Subject.objects.get(id=obj.id)
+        serializer = SubjectSerializer(science)
+        return {'name': serializer.data['subject'], 'id': serializer.data['id']}
 
 
 class QuizMiniSerializer(serializers.Serializer):
@@ -60,45 +74,28 @@ class QuizMiniSerializer(serializers.Serializer):
         return Quiz.objects.create(**validated_data)
 
 
-
 class SubjectSerializer(serializers.ModelSerializer):
     question_count = serializers.SerializerMethodField(read_only=True)
-    section = serializers.SerializerMethodField(read_only=True)
+    sections = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Subject
-        fields = ('id', 'subject', 'section', 'science', 'question_count')
+        fields = ('id', 'subject', 'sections', 'question_count')
 
     def get_question_count(self, obj):
         quiz = Quiz.objects.filter(subject=obj.id).count()
         return quiz
 
-    def get_section(self, obj):
-        section = Section.objects.get(id=obj.id)
-        return model_to_dict(section)
+    def get_sections(self, obj):
+        section = Section.objects.get(id=obj.section_id)
+        serializer = SectionSerializer(section)
+        return serializer.data
 
 
 class SectionSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(read_only=True)
-    name = serializers.CharField(max_length=55)
-
-    def update(self, instance, validated_data):
-        instance.name = validated_data.get("name")
-        instance.save()
-        return instance
-
-    def create(self, validated_data):
-        return Science.objects.create(**validated_data)
-
     class Meta:
         model = Section
-        fields = ('id', 'name')
-
-    def get_section(self, obj):
-        s = Section.objects.filter(science=self.id).values()
-        return s
-
-    # id = serializers.IntegerField(read_only=True)
+        fields = ('id', 'name', 'science')
 
 
 class ScienceSerializer(serializers.ModelSerializer):
@@ -108,14 +105,6 @@ class ScienceSerializer(serializers.ModelSerializer):
         model = Science
         fields = ['id', 'name', 'section']
 
-    # name = serializers.CharField(max_length=55)
-    # section = serializers.StringRelatedField()
-    #
-    # def update(self, instance, validated_data):
-    #     instance.name = validated_data.get("name")
-    #     instance.section = validated_data.get("section")
-    #     instance.save()
-    #     return instance
-    #
-    # def create(self, validated_data):
-    #     return Science.objects.create(**validated_data)
+    def get_section(self, obj):
+        sections = list(Section.objects.filter(science=obj.id).values())
+        return sections
