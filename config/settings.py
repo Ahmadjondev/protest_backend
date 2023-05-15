@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'battle',
     'universities',
     'histories',
+    'contests',
 
     # Image file
     'assets',

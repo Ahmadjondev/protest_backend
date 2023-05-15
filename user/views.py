@@ -3,12 +3,22 @@ from rest_framework.generics import ListAPIView
 
 from .models import User, Badge
 from rest_framework.views import APIView
+from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
-from .serializers import UserSerializer
+from .serializers import UserSerializer, MiniUserSerializer
 import os
 
 
 # Create your views here.
+
+class LeaderBoard(ListAPIView):
+    serializer_class = MiniUserSerializer
+
+    def get_queryset(self):
+        params = int(self.request.query_params.get('limit', 99))
+        return User.objects.all().order_by('-ball')[:params]
+
+
 class RegisterUser(APIView):
 
     def post(self, request):
@@ -27,13 +37,13 @@ class RegisterUser(APIView):
 
         if data['action'] == 'create_user':
             # try:
-                serializer = UserSerializer(data=data)
-                serializer.is_valid(raise_exception=True)
-                serializer.save()
-                return Response(
-                    {'ok': True, 'id': serializer.data['id'], 'message': "Foydanunchi muvaffaqiyatli yaratildi"})
+            serializer = UserSerializer(data=data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(
+                {'ok': True, 'id': serializer.data['id'], 'message': "Foydanunchi muvaffaqiyatli yaratildi"})
             # except:
-                return Response({'ok': False, 'error': 'User yaratilmadi'})
+            return Response({'ok': False, 'error': 'User yaratilmadi'})
 
 
 class LoginUser(APIView):

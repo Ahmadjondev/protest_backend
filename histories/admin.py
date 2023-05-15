@@ -1,15 +1,15 @@
 from django.contrib import admin
 
-from histories.models import SubjectHistory
+from histories.models import QuizHistory
 
 
 # Register your models here.
 
 
-@admin.register(SubjectHistory)
+@admin.register(QuizHistory)
 class SubjectHistoryAdmin(admin.ModelAdmin):
     list_display = [
         'id',
         'user',
-        'results'
+        # 'results'
     ]

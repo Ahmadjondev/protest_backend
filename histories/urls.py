@@ -1,7 +1,8 @@
 from rest_framework.urls import path
 
-from histories.views import CreateSubjectHistoriesView
+from histories.views import HistoriesView, CreateHistoryView
 
 urlpatterns = [
-    path('history/create-subject', CreateSubjectHistoriesView.as_view())
+    path('history', HistoriesView.as_view()),
+    path('history/create', CreateHistoryView.as_view())
 ]

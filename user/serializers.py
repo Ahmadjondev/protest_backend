@@ -11,7 +11,7 @@ class BadgeSerializer(serializers.ModelSerializer):
 class MiniUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'name', 'surname', 'image']
+        fields = ['id', 'name', 'surname', 'image', 'ball']
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -25,17 +25,6 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'surname', 'image', 'phone', 'birthday', 'region', 'city', 'ball', 'coins',
                   'created_at', 'badge', 'followers_count', 'following_count']
 
-    # def update(self, instance, validated_data):
-    #     instance.name = validated_data.get('name', instance.name)
-    #     instance.surname = validated_data.get('surname', instance.surname)
-    #     # instance.image = validated_data.get('image', instance.image)
-    #     instance.birthday = validated_data.get('birthday', instance.birthday)
-    #     instance.region = validated_data.get('region', instance.region)
-    #     instance.city = validated_data.get('city', instance.city)
-    #     instance.ball = validated_data.get('ball', instance.ball)
-    #     instance.coins = validated_data.get('coins', instance.coins)
-    #     instance.save()
-    #     return instance
 
     def get_following_count(self, obj):
         count = obj.following.all().count()

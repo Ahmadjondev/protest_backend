@@ -11,5 +11,6 @@ urlpatterns = [
     path('api/v1/', include('battle.urls')),
     path('api/v1/', include('universities.urls')),
     path('api/v1/', include('histories.urls')),
+    path('api/v1/', include('contests.urls')),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

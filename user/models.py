@@ -17,6 +17,10 @@ class User(models.Model):
     def nameFile(self, filename):
         return '/'.join(['UserImages', str(self.phone), filename])
 
+    GENDER_CHOICES = (
+        ('E', 'Erkak'),
+        ('A', 'Ayol'),
+    )
     image = models.ImageField(verbose_name='Image:', upload_to=nameFile, blank=True, null=True)
     name = models.CharField(max_length=30)
     surname = models.CharField(max_length=30)
@@ -25,8 +29,10 @@ class User(models.Model):
     birthday = models.CharField(max_length=10)
     region = models.CharField(max_length=30)
     city = models.CharField(max_length=30)
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES, null=True, blank=True)
     ball = models.DecimalField(max_digits=16, decimal_places=0, default=0)
     coins = models.DecimalField(max_digits=16, decimal_places=0)
+    balance = models.DecimalField(max_digits=18, decimal_places=2, default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     badge = models.ManyToManyField(Badge, blank=True)
     followers = models.ManyToManyField('self', blank=True, symmetrical=False, related_name='Followers')

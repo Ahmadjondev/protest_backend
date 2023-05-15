@@ -41,7 +41,7 @@ for item in json:
         correct_ans = 4
     elem = {
         'science': 1,
-        'subject': 3,
+        'subject': 1,
         'question_name': item['question_name'] if item['question_name'] != ' ' else '',
         'akam_id': item['question_id'],
         'var_a_name': item['var_a_name'],

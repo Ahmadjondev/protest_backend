@@ -8,38 +8,6 @@ from .serializer import SubjectSerializer, ScienceSerializer, QuizSerializer
 
 # Create your views here.
 
-def user_detail(id: int):
-    user = User.objects.get(id=id)
-    serializer = UserSerializer(user).data
-    json: dict = {
-        'id': serializer['id'],
-        'name': serializer['name']
-
-    }
-    return json
-
-
-def quiz_returned(serializer):
-    json = serializer
-    quiz_json: dict = {
-        'id': json['id'],
-        'science': json['science_id'],
-        'subject': json['subject_id'],
-        'akam_id': json['akam_id'],
-        'question_name': json['question_name'],
-        'var_a_name': json['var_a_name'],
-        'var_a_id': json['var_a_id'],
-        'var_b_name': json['var_b_name'],
-        'var_b_id': json['var_b_id'],
-        'var_c_name': json['var_c_name'],
-        'var_c_id': json['var_c_id'],
-        'var_d_name': json['var_d_name'],
-        'var_d_id': json['var_d_id'],
-        'correct': json['correct'],
-        'owner': dict(user_detail(json['owner'])),
-    }
-    return quiz_json
-
 
 class QuizView(generics.ListCreateAPIView):
     serializer_class = QuizSerializer
